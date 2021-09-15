@@ -1,0 +1,13 @@
+[package]
+name = "xuanwu"
+description = "A simple CLI tool to automatically insert whitespace between CJK and half-width characters"
+version = "1.0.0"
+authors = ["EAimTY <ea.imty@gmail.com>"]
+edition = "2018"
+readme = "README.md"
+license = "GPL-3.0 License"
+repository = "https://github.com/EAimTY/xuanwu"
+
+[dependencies]
+getopts = "0.2"
+pangu = "0.2"
