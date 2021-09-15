@@ -18,7 +18,7 @@ fn main() {
 fn parse(args: Vec<String>) -> Result<String, String> {
     let mut opts = Options::new();
 
-    opts.optopt("f", "", "read from file", "FILENAME");
+    opts.optopt("f", "", "read text from file", "FILENAME");
     opts.optflag("h", "help", "print this help menu");
 
     let matches = opts

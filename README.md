@@ -47,7 +47,7 @@ $ git clone https://github.com/EAimTY/xuanwu && cd xuanwu
 $ cargo build --release
 ```
 
-You can find the compiled file at `target/release/xuanwu`
+You can find the compiled binary in `target/release/`
 
 ## License
 
