@@ -1,16 +1,19 @@
 # Xuanwu
 
-Xuanwu is a simple CLI front end of [pangu](https://github.com/airt/pangu-rs) with no dependency, which can automatically insert whitespace between CJK (Chinese, Japanese, Korean) and half-width characters (alphabetical letters, numerical digits and symbols).
+Xuanwu is a simple command line front end of [pangu-rs](https://github.com/airt/pangu-rs)  which could automatically insert whitespace between CJK(Chinese, Japanese, Korean) and half-width characters(alphabetical letters, numerical digits and symbols).
 
 Xuanwu (玄武) is a powerful deity in Chinese religion, one of the higher-ranking deities in Taoism. In Chinese mythology, Xuanwu is the son of Pangu (盘古; 盤古), who separated heaven and earth and became geographic features such as mountains and rivers.
 
 ## Usage
 
-    Usage: xuanwu [options] [text]
+```
+Usage: xuanwu [options] [TEXT]
 
-    Options:
-        -f FILENAME         read from file
-        -h, --help          print this help menu
+Options:
+    -f FILE             read text from file
+    -v, --version       Print the version
+    -h, --help          Print this help menu
+```
 
 ### Input from argument
 
@@ -38,9 +41,9 @@ $ cat /PATH/TO/FILE
 當你凝視著 bug，bug 也凝視著你
 ```
 
-## Installation
+## Compile
 
-### Compile
+Required Rust 1.59 or above
 
 ```bash
 $ git clone https://github.com/EAimTY/xuanwu && cd xuanwu

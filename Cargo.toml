@@ -1,17 +1,21 @@
 [package]
 name = "xuanwu"
-description = "A simple CLI tool to automatically insert whitespace between CJK and half-width characters"
-version = "1.0.0"
+description = "A simple command line front end of pangu which could automatically insert whitespace between CJK and half-width characters"
+version = "1.0.1"
 authors = ["EAimTY <ea.imty@gmail.com>"]
-edition = "2018"
+edition = "2021"
+rust-version = "1.59"
 readme = "README.md"
-license = "GPL-3.0 License"
+license = "GPL-3.0-or-later"
 repository = "https://github.com/EAimTY/xuanwu"
 
 [dependencies]
+anyhow = "1.0"
 getopts = "0.2"
 pangu = "0.2"
 
 [profile.release]
 lto = true
+strip = true
 codegen-units = 1
+panic = "abort"

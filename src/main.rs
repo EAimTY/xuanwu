@@ -1,62 +1,49 @@
+use anyhow::{anyhow, bail, Result};
 use getopts::Options;
-use std::{env, fs};
+use std::{env, fs, process};
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
+    let args = env::args().collect::<Vec<_>>();
 
-    let text = match parse(args) {
-        Ok(t) => t,
-        Err(e) => {
-            println!("{}", e);
-            return;
+    let text = match parse_args(&args) {
+        Ok(text) => text,
+        Err(err) => {
+            eprintln!("{err}");
+            process::exit(1);
         }
     };
 
     println!("{}", pangu::spacing(&text));
 }
 
-fn parse(args: Vec<String>) -> Result<String, String> {
+fn parse_args(args: &[String]) -> Result<String> {
     let mut opts = Options::new();
 
-    opts.optopt("f", "", "read text from file", "FILENAME");
-    opts.optflag("h", "help", "print this help menu");
+    opts.optopt("f", "", "read text from file", "FILE");
+    opts.optflag("v", "version", "Print the version");
+    opts.optflag("h", "help", "Print this help menu");
+
+    let usage = opts.usage(&format!("Usage: {} [options]", args[0]));
 
     let matches = opts
         .parse(&args[1..])
-        .or_else(|e| return Err(e.to_string()))?;
+        .map_err(|err| anyhow!("{err}\n\n{usage}"))?;
+
+    if matches.opt_present("v") {
+        bail!("{}", env!("CARGO_PKG_VERSION"));
+    }
 
     if matches.opt_present("h") {
-        return Err(opts.usage(&format!("Usage: {} [options] [text]", args[0].clone())));
+        bail!("{usage}");
     }
 
     let file = matches.opt_str("f");
+    let mut free = matches.free.into_iter();
 
-    if file.is_none() && matches.free.is_empty() {
-        return Err(String::from("No input"));
-    } else if file.is_some() && !matches.free.is_empty() {
-        let mut free = String::new();
-
-        for arg in matches.free {
-            free.push_str(&arg);
-        }
-
-        return Err(format!("Unrecognized argument: {}", free));
-    } else if file.is_none() && matches.free.len() > 1 {
-        let mut free = String::new();
-
-        matches
-            .free
-            .iter()
-            .enumerate()
-            .filter(|(idx, _)| idx > &0)
-            .for_each(|(_, arg)| free.push_str(arg));
-
-        return Err(format!("Unrecognized argument: {}", free));
-    }
-
-    let text = match file {
-        Some(f) => fs::read_to_string(f).or_else(|e| return Err(e.to_string()))?,
-        None => matches.free[0].clone(),
+    let text = match (file, free.next(), free.next()) {
+        (Some(file), None, None) => fs::read_to_string(file)?,
+        (None, Some(text), None) => text,
+        _ => bail!("Bad input\n\n{usage}"),
     };
 
     Ok(text)
